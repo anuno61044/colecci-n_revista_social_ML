@@ -1,6 +1,8 @@
 # Custom config
 trained_models/
 images/
+debug/
+datasets/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
