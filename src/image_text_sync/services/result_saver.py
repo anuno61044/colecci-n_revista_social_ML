@@ -1,27 +1,44 @@
-import json
 import os
+import sqlite3
 from typing import List
 
-
 class ResultSaver:
-    def __init__(self, output_directory: str):
-        self.output_directory = output_directory
-        os.makedirs(self.output_directory, exist_ok=True)
+    def __init__(self, db_path: str):
+        self.db_path = db_path
+        db_directory = os.path.dirname(self.db_path)
+        if db_directory and not os.path.exists(db_directory):
+            os.makedirs(db_directory, exist_ok=True)
+        self._initialize_database()
+
+    def _initialize_database(self):
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS ImageData (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    magazine_name TEXT NOT NULL,
+                    page_index INTEGER NOT NULL,
+                    image_path TEXT NOT NULL,
+                    related_pages TEXT NOT NULL,
+                    related_text TEXT NOT NULL
+                )
+                """
+            )
+            conn.commit()
 
     def save_image_data(self, magazine_name: str, page_index: int, image_path: str, related_pages: List[int], related_text: str):
-        json_data = {
-            "magazine": magazine_name,
-            "image_page_index": page_index,
-            "path_to_image": image_path,
-            "related_text_pages": related_pages,
-            "related_text": related_text.strip().encode('latin1', errors='ignore').decode('utf-8', errors='ignore')
-        }
+        related_pages_str = ",".join(map(str, related_pages))  # Convierte la lista de páginas relacionadas en una cadena
 
-        magazine_output_dir = os.path.join(self.output_directory, magazine_name)
-        os.makedirs(magazine_output_dir, exist_ok=True)
-        output_path = os.path.join(magazine_output_dir, f"image_{page_index}.json")
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                INSERT INTO ImageData (magazine_name, page_index, image_path, related_pages, related_text)
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (magazine_name, page_index, image_path, related_pages_str, related_text.strip())
+            )
+            conn.commit()
 
-        with open(output_path, 'w') as json_file:
-            json.dump(json_data, json_file, indent=4)
-
-        print(f"Saved JSON for image {page_index} to {output_path}")
+        print(f"Saved data for image {page_index} in magazine '{magazine_name}' to the database.")

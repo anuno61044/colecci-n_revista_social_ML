@@ -11,7 +11,6 @@ class Main:
         self.img_directory = img_directory
         self.output_directory = output_directory
         self.result_saver = ResultSaver(output_directory)
-        os.makedirs(self.output_directory, exist_ok=True)
         self.magazines: List[Magazine] = []
         self.images: List[MagazineImage] = []
         self.pdf_reader = FitzPdfReader()
@@ -22,9 +21,6 @@ class Main:
             return
         if not os.path.isdir(self.img_directory):
             print(f"The route {self.img_directory} is not a valid folder.")
-            return
-        if not os.path.isdir(self.output_directory):
-            print(f"The output directory {self.output_directory} is not valid.")
             return
 
         pdf_files = [file for file in os.listdir(self.pdf_directory) if file.endswith('.pdf')]
