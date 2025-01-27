@@ -43,4 +43,9 @@ class ResultSaver:
             )
             conn.commit()
 
-        # print(f"Saved data for image {page_index} in magazine '{magazine_name}' to the database.")
+    def count_images_with_caption(self) -> int:
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM ImageData WHERE caption IS NOT NULL AND caption != ''")
+            count = cursor.fetchone()[0]
+        return count
