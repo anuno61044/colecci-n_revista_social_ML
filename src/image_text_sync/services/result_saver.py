@@ -18,6 +18,7 @@ class ResultSaver:
                 CREATE TABLE IF NOT EXISTS ImageData (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     magazine_name TEXT NOT NULL,
+                    caption TEXT,
                     page_index INTEGER NOT NULL,
                     image_path TEXT NOT NULL,
                     related_pages TEXT NOT NULL,
@@ -27,18 +28,19 @@ class ResultSaver:
             )
             conn.commit()
 
-    def save_image_data(self, magazine_name: str, page_index: int, image_path: str, related_pages: List[int], related_text: str):
-        related_pages_str = ",".join(map(str, related_pages))  # Convierte la lista de páginas relacionadas en una cadena
+    def save_image_data(self, magazine_name: str, page_index: int, image_path: str, related_pages: List[int], related_text: str, caption: List[str]):
+        related_pages_str = ",".join(map(str, related_pages)) 
+        captions = ",".join(map(str, caption)) 
 
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             cursor.execute(
                 """
-                INSERT INTO ImageData (magazine_name, page_index, image_path, related_pages, related_text)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO ImageData (magazine_name, page_index, image_path, related_pages, related_text, caption)
+                VALUES (?, ?, ?, ?, ?, ?)
                 """,
-                (magazine_name, page_index, image_path, related_pages_str, related_text.strip())
+                (magazine_name, page_index, image_path, related_pages_str, related_text.strip(), captions)
             )
             conn.commit()
 
-        print(f"Saved data for image {page_index} in magazine '{magazine_name}' to the database.")
+        # print(f"Saved data for image {page_index} in magazine '{magazine_name}' to the database.")
