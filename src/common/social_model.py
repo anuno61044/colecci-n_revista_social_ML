@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from PIL import ImageFile, Image
+from PIL import Image
 from transformers import BlipProcessor, BlipForConditionalGeneration
 import lorem
 
@@ -29,3 +29,15 @@ def get_blip():
 
 def get_tuned_blip():
     return BLIP_SocialModel('../../external/trained_models/blip_image_captioning_tuned')
+
+def get_clip():
+    pass
+
+def get_tuned_clip():
+    pass
+
+def get_combined_1():
+    pass
+
+def get_combined_2():
+    pass
