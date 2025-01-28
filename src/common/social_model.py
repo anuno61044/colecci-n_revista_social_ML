@@ -21,3 +21,10 @@ class BLIP_SocialModel(SocialModel):
 class Random_SocialModel(SocialModel):
     def caption(self, raw_image):
         return lorem.sentence()
+    
+
+def get_blip():
+    return BLIP_SocialModel('../../external/trained_models/blip_image_captioning_base')
+
+def get_tuned_blip():
+    return BLIP_SocialModel('../../external/trained_models/blip_image_captioning_tuned')
