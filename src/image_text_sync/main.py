@@ -71,7 +71,7 @@ class Main:
             except Exception as e:
                 print(f"Error processing {img_file}: {e}")
 
-    def associate_images_with_text(self):
+    def associate_images_with_text(self, num_pages):
         for image in self.images:
             magazine = next((mag for mag in self.magazines if mag.name == image.magazine_name), None)
             if not magazine:
@@ -84,7 +84,8 @@ class Main:
             related_text = ""
             for page in related_pages:
                 if 0 <= page - 1 < len(magazine.pages):
-                    related_text += magazine.pages[page - 1].text
+                    for i in range(1, num_pages):
+                        related_text += magazine.pages[page - i].text
 
             self.result_saver.save_image_data(
                 magazine_name=magazine.name,
@@ -124,4 +125,4 @@ if __name__ == "__main__":
         output_directory=route_to_output_files
     )
     main_app.load_data()
-    main_app.associate_images_with_text()
+    main_app.associate_images_with_text(1)
