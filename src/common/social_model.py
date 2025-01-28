@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
-from PIL import ImageFile
+from PIL import ImageFile, Image
 from transformers import BlipProcessor, BlipForConditionalGeneration
 import lorem
 
 class SocialModel(ABC):
     @abstractmethod
-    def caption(raw_image : ImageFile.ImageFile) -> str:
+    def caption(str : str) -> str:
         pass
 
 class BLIP_SocialModel(SocialModel):
@@ -13,13 +13,14 @@ class BLIP_SocialModel(SocialModel):
         self._processor = BlipProcessor.from_pretrained(path)
         self._model = BlipForConditionalGeneration.from_pretrained(path)
     
-    def caption(self, raw_image : ImageFile.ImageFile):
+    def caption(self, image_path : str):
+        raw_image = Image.open(image_path).convert('RGB')
         inputs = self._processor(images=raw_image, return_tensors="pt")
         outputs = self._model.generate(**inputs, num_beams=1, max_length=40)
         return self._processor.decode(outputs[0], skip_special_tokens=True)
     
 class Random_SocialModel(SocialModel):
-    def caption(self, raw_image):
+    def caption(self, image_path):
         return lorem.sentence()
     
 
