@@ -5,7 +5,7 @@ import lorem
 
 class SocialModel(ABC):
     @abstractmethod
-    def caption(raw_image : ImageFile.ImageFile) -> str:
+    def caption(self, raw_image : ImageFile.ImageFile) -> str:
         pass
 
 class BLIP_SocialModel(SocialModel):
