@@ -1,8 +1,9 @@
 # Custom config
-trained_models/
-images/
+*.jpeg
+*.txt
+*.pdf
 debug/
-datasets/
+external/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -175,7 +176,3 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-
-*.jpeg
-*.txt
-*.pdf
