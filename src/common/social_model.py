@@ -5,7 +5,7 @@ import lorem
 
 class SocialModel(ABC):
     @abstractmethod
-    def caption(str : str) -> str:
+    def caption(self, str : str) -> str:
         pass
 
 class BLIP_SocialModel(SocialModel):
