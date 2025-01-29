@@ -85,3 +85,4 @@ yarl==1.18.3
 
 lorem~=0.1.1
 SQLAlchemy~=2.0.37
+matplotlib~=3.10.0
