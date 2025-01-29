@@ -85,7 +85,8 @@ class Main:
             for page in related_pages:
                 if 0 <= page - 1 < len(magazine.pages):
                     for i in range(i, num_pages):
-                        related_text += magazine.pages[page - i].text
+                        if page - i >= 0:
+                            related_text += magazine.pages[page - i].text
 
             self.result_saver.save_image_data(
                 magazine_name=magazine.name,
@@ -125,4 +126,7 @@ if __name__ == "__main__":
         output_directory=route_to_output_files
     )
     main_app.load_data()
-    main_app.associate_images_with_text(1)
+    num_pages = os.environ.get('SOCIAL_NUM_PAGE')
+    if num_pages == None:
+        num_pages = 1
+    main_app.associate_images_with_text(num_pages)
