@@ -4,9 +4,11 @@ from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
 
 from src.common.CLIPResultObject import CLIPResultObject
-from src.common.data_handler import process_images_k_by_k
+from src.common.data_handler import process_images_k_by_k, get_image_captions
+from src.common.social_model import SocialModel
 
-class CLIPSocialModel:
+
+class CLIPSocialModel(SocialModel):
     def __init__(self, model_path):
         self._processor = CLIPProcessor.from_pretrained(model_path)
         self._model = CLIPModel.from_pretrained(model_path)
@@ -34,6 +36,7 @@ class CLIPSocialModel:
             caption_probs[caption] = probs[0][i].item()
         result = CLIPResultObject(image_path, caption_probs)
         self.results[image_path] = result
+        return result
 
     def process_using_db(self, database_path):
         for image_path, surrounding_text in process_images_k_by_k(database_path):
@@ -42,4 +45,11 @@ class CLIPSocialModel:
             else:
                 captions = self.split_text_with_overlap(surrounding_text)
                 self.assign_probs_caption(image_path, captions)
-                print("Done")
+
+    def caption(self, image_id: str) -> str:
+        image_path, surrounding_text = get_image_captions(image_id)
+        if image_id is None or surrounding_text is None :
+            raise Exception(f"Image Id {image_id} not found")
+        captions = self.split_text_with_overlap(surrounding_text)
+        result = self.assign_probs_caption(image_path, captions)
+        return max(result.captions_probs, key=result.captions_probs.get)
