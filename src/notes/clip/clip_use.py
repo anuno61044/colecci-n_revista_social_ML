@@ -1,7 +1,7 @@
 from src.common.ClipSocialModel import CLIPSocialModel
 import random as rd
 
-model_path = "../../../external/trained_models/clip_image_captioning_base2"
+model_path = "../../../external/trained_models/clip_image_captioning_base"
 database_path = "sqlite:///../../../external/dataset/metadata.db"
 
 clip = CLIPSocialModel(model_path)
