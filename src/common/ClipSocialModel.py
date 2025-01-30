@@ -48,11 +48,19 @@ class CLIPSocialModel(SocialModel):
                     break
         return results
 
-    def caption(self, image_id: str) -> str:
+    def get_image_and_captions(self, image_id : str):
         image_path, surrounding_text = get_image_captions(image_id)
         if image_id is None or surrounding_text is None :
             raise Exception(f"Image Id {image_id} not found")
         captions = self.split_text_with_overlap(surrounding_text)
         image = Image.open(image_path)
+        return image, captions
+
+    def process(self, image_id : str):
+        image, captions = get_image_captions(image_id)
         result = self.assign_probs_caption(image, captions)
+        return result
+
+    def caption(self, image_id: str) -> str:
+        result = self.process(image_id)
         return max(result.captions_probs, key=result.captions_probs.get)
