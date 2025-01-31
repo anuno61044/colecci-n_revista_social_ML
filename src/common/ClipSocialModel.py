@@ -57,7 +57,8 @@ class CLIPSocialModel(SocialModel):
         return image, captions
 
     def process(self, image_id : str):
-        image, captions = get_image_captions(image_id)
+        image_path, captions = get_image_captions(image_id)
+        image = Image.open(image_path)
         result = self.assign_probs_caption(image, captions)
         return result
 
