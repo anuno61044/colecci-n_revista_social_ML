@@ -14,8 +14,9 @@ class BlipAndClipSocialModel(SocialModel):
     def max_blip_clip(self, image_id, threshold=0.6):
         blip_result = self.blip_social_model.caption(image_id)
         clip_result = self.clip_social_model.process(image_id)
-        if max(clip_result.captions_probs.values()) >= threshold:
-            return max(clip_result.captions_probs, key=clip_result.captions_probs.get)
+        max_prob, best_caption = clip_result.get_best()
+        if max_prob >= threshold:
+            return best_caption
         else:
             return blip_result
 
@@ -24,7 +25,8 @@ class BlipAndClipSocialModel(SocialModel):
         image, captions = self.clip_social_model.get_image_and_captions(image_id)
         captions.append(blip_result)
         clip_result = self.clip_social_model.assign_probs_caption(image, captions)
-        return max(clip_result.captions_probs, key=clip_result.captions_probs.get)
+        max_prob, best_caption = clip_result.get_best()
+        return best_caption
 
     def caption(self, image_id: str) -> str:
         if self.caption_method == _use_blip_in_clip:

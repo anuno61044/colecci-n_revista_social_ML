@@ -63,4 +63,5 @@ class CLIPSocialModel(SocialModel):
 
     def caption(self, image_id: str) -> str:
         result = self.process(image_id)
-        return max(result.captions_probs, key=result.captions_probs.get)
+        max_prob, best_caption = result.get_best()
+        return best_caption

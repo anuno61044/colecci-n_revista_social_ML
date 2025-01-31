@@ -8,6 +8,10 @@ class CLIPResultObject:
     def __init__(self, image : Image, caption_probs : dict[str, float]):
         self.image = image
         self.captions_probs = caption_probs
+
+    def get_best(self):
+        return max(self.captions_probs), max(self.captions_probs, key=self.captions_probs.get)
+
     def visualize(self):
         plot_image_with_captions(self.image, self.captions_probs)
 
