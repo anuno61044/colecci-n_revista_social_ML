@@ -26,7 +26,6 @@ def process_images_k_by_k(database_path):
             new_image_path = modify_image_path(image_path)
             yield new_image_path, str(row[_surrounding_text])
 
-
 def get_image_path_surrounding_test(image_id, database_path="sqlite:///../../../external/dataset/metadata.db", base_path = _base_path, use_unix = True):
     engine = create_engine(database_path)
     query = f"SELECT image_path, related_text FROM ImageData WHERE id = '{image_id}'"
