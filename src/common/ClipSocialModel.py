@@ -4,7 +4,7 @@ from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
 
 from src.common.CLIPResultObject import CLIPResultObject
-from src.common.data_handler import process_images_k_by_k, get_image_captions
+from src.common.data_handler import process_images_k_by_k, get_image_path_surrounding_test
 from src.common.social_model import SocialModel
 
 class CLIPSocialModel(SocialModel):
@@ -24,7 +24,7 @@ class CLIPSocialModel(SocialModel):
         return parts
 
     def assign_probs_caption(self, image : Image, captions : list[str]):
-        inputs = self._processor(text=captions, images=image, return_tensors="pt", padding=True)
+        inputs = self._processor(text=captions, images=image, return_tensors="pt", padding=True, truncation=True, max_length=40)
         outputs = self._model(**inputs)
         logits_per_image = outputs.logits_per_image
         probs = logits_per_image.softmax(dim=1)
@@ -49,7 +49,7 @@ class CLIPSocialModel(SocialModel):
         return results
 
     def get_image_and_captions(self, image_id : str):
-        image_path, surrounding_text = get_image_captions(image_id)
+        image_path, surrounding_text = get_image_path_surrounding_test(image_id)
         if image_id is None or surrounding_text is None :
             raise Exception(f"Image Id {image_id} not found")
         captions = self.split_text_with_overlap(surrounding_text)
@@ -57,8 +57,7 @@ class CLIPSocialModel(SocialModel):
         return image, captions
 
     def process(self, image_id : str):
-        image_path, captions = get_image_captions(image_id)
-        image = Image.open(image_path)
+        image, captions = self.get_image_and_captions(image_id)
         result = self.assign_probs_caption(image, captions)
         return result
 

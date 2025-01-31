@@ -27,7 +27,7 @@ def plot_image_with_captions(image, caption_probs):
     colors = [f"#{random.randint(0, 0xFFFFFF):06x}" for _ in probs]
 
     y_pos = range(len(captions))
-    bar_container = ax[1].barh(y_pos, probs, color=colors, edgecolor='k')
+    ax[1].barh(y_pos, probs, color=colors, edgecolor='k')
     ax[1].set_yticks(y_pos)
     ax[1].set_yticklabels(captions)
     ax[1].invert_yaxis()  # Invert y-axis to have the highest probability on top
