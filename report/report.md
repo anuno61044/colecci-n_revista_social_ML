@@ -1,97 +1,8 @@
-## Estructura
-
-1. Introducción  
-    - Contexto y motivación  
-
-        Explicar la importancia del *image captioning* y sus aplicaciones (asistentes virtuales, accesibilidad, búsqueda de imágenes, etc.).  
-
-    - Problema a resolver  
-    
-        Dependencia de datos anotados, necesidad de modelos más eficientes y flexibles.  
-
-    - Objetivo del proyecto  
-
-        Aplicar CLIP y BLIP para generar descripciones automáticas de imágenes, aprovechando modelos preentrenados.  
-
----
-
-2. Marco Teórico
-    - Conceptos clave  
-        - *Image Captioning* y su importancia.  
-        - Modelos neuronales en *image captioning* (Transformers, CNNs, LSTMs).  
-
-    - Modelos utilizados  
-        - CLIP (*Contrastive Language–Image Pretraining*): Explicación de cómo aprende representaciones visuales y textuales en un espacio compartido.  
-        - BLIP (*Bootstrapped Language-Image Pretraining*): Explicación de cómo genera captions mediante aprendizaje contrastivo y modelos generativos.  
-
-    - Trabajos relacionados  
-
-        Comparación con enfoques tradicionales de *image captioning* y avances recientes.
-
----
-
-3. Metodología 
-    - Arquitectura del sistema  
-    
-        Diagrama y descripción del pipeline utilizado.  
-
-    - Preprocesamiento de datos  
-        - Conjunto de datos utilizado  
-        - Métodos de preprocesamiento (redimensionamiento de imágenes, tokenización de texto).  
-
-    - Implementación del modelo  
-        - Integración de CLIP y BLIP en el sistema.  
-        - Modificaciones o ajustes realizados.  
-
-    - Estrategia de entrenamiento y evaluación  
-        - División de datos (entrenamiento, validación, prueba).  
-        - Métricas utilizadas (BLEU, CIDEr, METEOR, SPICE). 
-
----
-
-4. Experimentos y Resultados 
-    - Configuración experimental  
-
-        Hardware utilizado, parámetros de entrenamiento.  
-
-    - Resultados obtenidos  
-        - Comparación de desempeño del modelo teniendo en cuenta los hiperparámetros.  
-        - Análisis cualitativo y cuantitativo de los resultados.  
-
-    - Errores y desafíos  
-        - Limitaciones del modelo.  
-        - Casos en los que falla y posibles explicaciones.
-
----
-
-5. Conclusiones y Trabajo Futuro
-    - Resumen de hallazgos  
-
-        Principales logros del proyecto.  
-
-    - Mejoras futuras  
-
-        Extensión a otros dominios, incorporación de *fine-tuning*, mejoras en la generación de captions.  
-
----
-
-6. Referencias
-
-    Citar papers, artículos y fuentes relevantes utilizadas en el proyecto.  
-
----
-
-7. Apéndices (Opcional)  
-    - Código relevante o fragmentos de implementación.  
-    - Resultados adicionales.
-
-
-
 ## Introducción
 
 ### Contexto y motivación  
 
-Todos los días, nos encontramos con una gran cantidad de imágenes de diversas fuentes como redes sociales, medios digitales, documentación técnica, entre otros, las cuales los espectadores muchas veces tienen que interpretar mismos ya que no tienen una descripción, pero el ser humano puede entenderlas sin necesidad de subtítulos detallados. Sin embargo, con el aumento de los volúmenes de datos ha surgido la necesidad de tener los datos bien descritos para ser almacenados y poder buscarlos de manera eficiente. Dado que la descripción manual de imágenes es un proceso costoso y poco escalable, la automatización de esta tarea se ha vuelto una prioridad en el desarrollo de tecnologías inteligentes.
+Todos los días, nos encontramos con una gran cantidad de imágenes de diversas fuentes como redes sociales, medios digitales, documentación técnica, entre otros, las cuales los espectadores muchas veces tienen que interpretar ellos mismos ya que no tienen una descripción, pero el ser humano puede entenderlas sin necesidad de subtítulos detallados. Sin embargo, con el aumento de los volúmenes de datos ha surgido la necesidad de tenerlos bien descritos para ser almacenados y poder buscarlos de manera eficiente. Dado que la descripción manual de imágenes es un proceso costoso y poco escalable, la automatización de esta tarea se ha vuelto una prioridad en el desarrollo de tecnologías inteligentes.
 
 ### Problema a resolver  
 
@@ -130,14 +41,14 @@ En los últimos años, los modelos multimodales han revolucionado el campo del *
 
 Ambos módulos transforman imágenes y textos en un espacio de características compartido donde se pueden comparar directamente.
 
-El entrenamiento contrastivo de **CLIP** se basa en la idea de maximizar la similitud entre pares correctos de imágenes y textos mientras minimiza la similitud entre pares incorrectos. Para lograr esto, **CLIP** se entrena con un gran conjunto de datos de imágenes y sus descripciones de internet. Cada imagen y su texto correspondiente se convierten en representaciones numéricas mediante las redes neuronales vistas anteriormente. Luego, el modelo calcula la similitud entre todos los pares en un mismo lote mediante un producto escalar en un espacio de características compartido. Se emplea una función de pérdida contrastiva (*InfoNCE Loss*), la cual aumenta la proximidad entre los vectores de imágenes y textos correctos y aleja los no relacionados. A través de este proceso, **CLIP** aprende una representación multimodal donde imágenes y descripciones semánticamente similares quedan cercanas en el espacio latente, permitiéndole realizar tareas de clasificación, búsqueda de imágenes y razonamiento visual-lingüístico sin necesidad de reentrenamiento específico (*zero-shot learning*).
+El entrenamiento contrastivo de **CLIP** se basa en la idea de maximizar la similitud entre pares correctos de imágenes y textos mientras minimiza la similitud entre pares incorrectos. Para lograr esto, **CLIP** se entrena con un gran conjunto de datos de imágenes y sus descripciones de internet. Cada imagen y su texto correspondiente se convierten en representaciones numéricas mediante las redes neuronales vistas anteriormente. Luego, el modelo calcula la similitud entre todos los pares en un mismo lote mediante un producto escalar en un espacio de características compartido. Se emplea una función de pérdida contrastiva (*InfoNCE Loss*), la cual aumenta la proximidad entre los vectores de imágenes y textos correctos y aleja los no relacionados. A través de este proceso, **CLIP** aprende una representación multimodal donde imágenes y descripciones semánticamente similares quedan cercanas en el espacio, permitiéndole realizar tareas de clasificación, búsqueda de imágenes y razonamiento visual-lingüístico sin necesidad de reentrenamiento específico (*zero-shot learning*).
 
 A pesar de esto no puede generar captions directamente, sino en combinación con modelos generativos como **BLIP** (**Bootstrapped Language-Image Pretraining**) (Li et al. 2022), que combina *Vision Transformers* (*ViT*) con modelos de lenguaje como *BERT* para generar captions más precisos y ricos en contexto. **BLIP** es capaz de realizar tanto *Image Captioning* como tareas relacionadas, como *Visual Question Answering* (*VQA*) y *Text-Based Image Retrieval*. Gracias a su enfoque de entrenamiento basado en múltiples objetivos, **BLIP** supera a muchos modelos previos en métricas como *BLEU* y *CIDEr*.
 
-Introduce una arquitectura llamada *Multimodal Mixture of Encoder-Decoder (MED)*, que permite un preentrenamiento más flexible en comparación con modelos previos como **CLIP**. Mientras que **CLIP** se basa en un codificador unimodal que aprende representaciones conjuntas de imágenes y textos a través de una pérdida contrastiva, BLIP combina tres enfoques: 
-- codificador unimodal para el alineamiento de imágenes y textos
-- codificador basado en imágenes que incorpora atención cruzada para capturar relaciones más detalladas
-- decodificador basado en imágenes que genera texto condicionalmente. 
+Introduce una arquitectura llamada *Multimodal Mixture of Encoder-Decoder (MED)*, que permite un preentrenamiento más flexible en comparación con modelos previos como **CLIP**, combinando tres enfoques: 
+- Codificador unimodal para el alineamiento de imágenes y textos
+- Codificador basado en imágenes que incorpora atención cruzada para capturar relaciones más detalladas
+- Decodificador basado en imágenes que genera texto condicionalmente. 
 
 ![](./images/blip.jpg)
 
@@ -154,6 +65,18 @@ Esta combinación es lo que permite que BLIP se desempeñe bien en tareas tanto 
 
 
 ## Metodología
+
+### Arquitectura
+
+La arquitectura del sistema está compuesta por los siguientes componentes:
+
+- Preprocesamiento de datos
+- Entrenamiento
+- Combinación
+- Evaluación
+
+![](./images/pipeline.jpg)
+
 
 ### Preprocesamiento de datos
 
@@ -179,9 +102,82 @@ Para cada imagen, se guardó no solo el caption asociado en la revista, sino tam
 
 Como se mencionó anteriormente, en muchos casos el caption extraído de las imágenes no era coherente o no describía correctamente la imagen. Para entrenar el modelo que generaría los captions faltantes, necesitábamos imágenes con sus captions lo más precisos posibles. Por lo tanto, era necesario realizar una limpieza de los captions que *Tesseract* extraía incorrectamente o que no estaban bien relacionados con sus imágenes asociadas.
 
-Para esto, utilizamos el modelo **CLIP**, proporcionando como entrada tanto la imagen como su caption. Sin embargo, **CLIP** no podía evaluar directamente la calidad del caption. Por eso, generamos 5 captions alternativos utilizando Lorem Ipsum para cada imagen y los pasamos por **CLIP**. Si alguno de los captions generados por Lorem Ipsum obtenía una mayor probabilidad de estar relacionado con la imagen, asumíamos que el caption original no era válido y lo eliminábamos.
+Para esto, utilizamos el modelo **CLIP**, proporcionando como entrada tanto la imagen como su caption. Sin embargo, **CLIP** no podía evaluar directamente la calidad del caption. Por eso, generamos 5 captions alternativos utilizando *Lorem Ipsum* para cada imagen y los pasamos por **CLIP**. Si alguno de los captions generados por *Lorem Ipsum* obtenía una mayor probabilidad de estar relacionado con la imagen, asumíamos que el caption original no era válido y lo eliminábamos.
+
+### Implementación del modelo
+
+Para abordar el problema de agregar etiquetas a las fotos de las revistas, nos apoyamos en los modelos preentrenados **CLIP** y **BLIP**, los cuales muestran un buen rendimiento según el estado del arte y son de código abierto.
+
+Sin embargo, debido a las particularidades de nuestro proyecto, decidimos combinarlos y ajustarlos a los datos específicos de este. La combinación se realizó de la siguiente manera:
+
+Para **CLIP**, utilizamos como captions fragmentos del texto alrededor de las imágenes. **BLIP**, por otro lado, solo requiere las imágenes para generar los captions.
+En primer lugar, aplicamos los modelos **CLIP** y **BLIP** de la forma estándar: **BLIP** genera un caption para cada imagen, mientras que para **CLIP** seleccionamos el caption con la mayor probabilidad asociada a cada imagen. A continuación, utilizamos algunas imágenes con captions obtenidos manualmente para realizar un proceso de *fine-tuning* de ambos modelos. Con estos modelos ajustados, intentamos nuevamente generar captions para las imágenes.
+
+Además implementamos un enfoque híbrido con dos estrategias diferentes:
+- Usamos **BLIP** para generar un caption para la imagen y lo combinamos con los captions del texto alrededor de la imagen. Este conjunto se utiliza como entrada para **CLIP**, y el resultado con la mayor probabilidad es el que se devuelve como la descripción final de la imagen.
+- Usamos **BLIP** para generar un caption para la imagen y, luego, aplicamos **CLIP** de la manera descrita previamente solo con el texto circundante de la imagen. Si el mejor resultado obtenido de **CLIP** tiene una probabilidad suficientemente alta, lo usamos como caption. En caso contrario, nos quedamos con el caption generado por **BLIP**.
+
+### Estrategia de entrenamiento y evaluación:
+
+Para ajustar (*fine-tuning*) los modelos utilizados, nos basamos en las imágenes que ya contaban con descripciones en las revistas. Aunque el entrenamiento debería haber incluido una fase de validación, debido a limitaciones de recursos (cómputo y tiempo), decidimos realizar un entrenamiento "puro", sin validación formal. El objetivo de este ajuste era mejorar el rendimiento de los modelos en el resto de las imágenes de las revistas, ya que estas constituían una representación adecuada del conjunto de datos. 
+
+Para evaluar los modelos resultantes y sus combinaciones, utilizamos un conjunto de imágenes diferente al utilizado en el entrenamiento, cuyas descripciones fueron proporcionadas por uno de los miembros del equipo. Cada modelo (producido a partir de combinaciones de hiperparámetros) se evaluó con estas imágenes y los resultados obtenidos se compararon para identificar el mejor.
+
+Para establecer la superioridad de un modelo sobre otro de manera estadísticamente consistente, utilizamos métricas de similitud de texto, como **METEOR**, **BLEU** y **ROUGE**, que son comunes en tareas de generación de lenguaje natural (NLG). A partir de estas métricas, verificamos que se cumplieran simultáneamente las siguientes condiciones:
+
+- Un **p-value < 0.05** tras realizar un **t-test** sobre los valores de las métricas obtenidos para cada caption generado. Esto asegura que la diferencia entre medias sea estadísticamente significativa.
+- El intervalo de confianza calculado a partir de las diferencias de scores no debe incluir el cero.
+- El *tamaño del efecto* (*effect size*), basado en **Cohen's d**, debe ser superior a 0.2, lo que verifica la significancia práctica de la diferencia.
+
+Si las tres condiciones se cumplen simultáneamente, podemos concluir con alta probabilidad que un modelo es superior a otro.
 
 
+## Análisis de experimentos y resultados
+
+### Resultados del preentrenamiento
+
+En el caso de detectar imágenes en las revistas nos quedó la siguiente matriz de confusión:
+
+![](./images/photo_2025-01-31_02-27-49.jpg)
+
+LLegando a la conclusión de que el modelo es bueno para identificar fotos verdaderas, sin embargo arrojó algunos falsos negativos.
+Con la matriz de confusión podemos calcular la precisión(accuracy) 
+
+- $Precisión = VP / (VP + FP)$
+- $Precisión = 157 / (157 + 35) = 157 / 192 = 0.82$
+
+También tenemos los resultados de la métrica F1:
+![](./images/photo_2025-01-31_02-27-43.jpg)
+El cual nos dice que la curva alcanzó su puntuación máxima en 0.88 con un umbral de confianza de 0.55, estos valores nos indica que en general el modelo es capaz de detectar la mayoría de los objetos
+
+Además se midió también la métrica Recall:
+![](./images/photo_2025-01-31_02-27-21.jpg)
+La grafica indica que la curva tiene un recall máximo de 0.98 cuando el umbral de confianza es 0. Esto significa que, en promedio, el modelo es capaz de encontrar el 98% de todos los objetos cuando se fija un umbral de confianza de 0.
+
+### Resultados del modelo
+
+Durante el flujo de ejecución de nuestro pipeline, existen varios ajustes en los hiperparámetros que pueden afectar el resultado final. Para simplificar y agilizar este proceso, decidimos centrarnos en los siguientes hiperparámetros, los cuales podrían ser ampliados en futuras investigaciones:
+- Limpieza de datos: Este es un hiperparámetro booleano que indica si se incluye o no la fase de limpieza de datos en el flujo de trabajo. Es importante destacar que la limpieza de datos implica también el entrenamiento de algunos modelos.
+- Modelo a seleccionar: Este hiperparámetro discreto define cuál de los modelos o combinaciones de modelos se utilizará para generar los captions.
+
+Al evaluar los resultados obtenidos sobre el conjunto de imágenes, descubrimos que el mejor flujo de trabajo corresponde al que utiliza el modelo **BLIP** de manera aislada y sin ajustes. Aunque podría parecer contraintuitivo, ya que se espera que ajustar y combinar modelos mejore la eficacia, tenemos dos hipótesis que explican este comportamiento:
+
+![](./images/Figure_1.png)
+
+- Las imágenes utilizadas para ajustar **BLIP** y **CLIP** fueron extraídas por modelos de machine learning como **YOLO**, los cuales no garantizan la precisión de los captions. Además, durante la limpieza de datos se utilizó **CLIP**, que tampoco ofrece certezas absolutas. Es posible que el ruido generado por estos pasos haya afectado negativamente el rendimiento, enmascarando los beneficios de ajustar los modelos. Una solución futura podría ser generar un conjunto de imágenes etiquetadas por humanos, lo que ayudaría a superar las deficiencias introducidas por **YOLO** y **CLIP**.
+- Tanto **BLIP** como **CLIP** están suficientemente entrenados y ajustados. Por lo tanto, pequeños ruidos introducidos, ya sea por **YOLO**, **CLIP** o incluso por nuestra propia falta de experiencia al implementar métodos de entrenamiento, podrían desestabilizar su comportamiento esperado y afectar negativamente los resultados.
+
+## Conclusiones y Trabajo Futuro
+
+### Resumen de resultados
+
+El sistema para la extracción y generación de captions en revistas antiguas mostró buenos resultados, pero con desafíos. Utilizando modelos preentrenados como YOLO, CLIP y BLIP, logramos identificar imágenes y generar descripciones automáticas. Sin embargo, la combinación de estos modelos no alcanzó el rendimiento óptimo debido a la calidad del texto extraído por Tesseract y los ruidos introducidos por las herramientas. A pesar de estos problemas, el modelo BLIP aislado sin ajustes adicionales ofreció el mejor rendimiento, sugiriendo que se debe investigar cómo gestionar los ruidos en el pipeline.
+
+### Trabajo a futuro
+
+El trabajo realizado ha sentado las bases para futuras mejoras en el proceso de generación de captions para revistas antiguas, y hay varias áreas que podrían explorarse para aumentar la precisión y eficiencia del sistema:
+- Generación de datos etiquetados por humanos: Para mitigar el ruido introducido por YOLO y CLIP, se podría generar un conjunto de imágenes etiquetadas manualmente por humanos. Esto permitiría mejorar la precisión del entrenamiento de los modelos, ya que los captions generados serían más confiables y representativos de las imágenes.
+- Optimización de la limpieza de datos: La fase de limpieza de datos podría beneficiarse de un análisis más detallado y de la implementación de modelos más robustos para la validación de captions. La capacidad de CLIP para evaluar la calidad de un caption es limitada, por lo que una solución más avanzada para la detección de captions incorrectos podría ser desarrollada.
 
 
 ## Referencias
