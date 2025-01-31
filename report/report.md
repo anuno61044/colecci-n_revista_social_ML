@@ -139,20 +139,25 @@ Introduce una arquitectura llamada *Multimodal Mixture of Encoder-Decoder (MED)*
 - codificador basado en imágenes que incorpora atención cruzada para capturar relaciones más detalladas
 - decodificador basado en imágenes que genera texto condicionalmente. 
 
+![](./images/blip.jpg)
+
 Esta combinación es lo que permite que BLIP se desempeñe bien en tareas tanto de comprensión como de generación, mientras que **CLIP** no. En términos de entrenamiento, **BLIP** introduce el método *CapFilt (Captioning + Filtering)* para mejorar la calidad de los datos utilizados en el preentrenamiento. A diferencia de **CLIP**, que entrena en grandes cantidades de pares imagen-texto sin filtrar, **BLIP** utiliza un generador de subtítulos (*Captioner*) para crear descripciones sintéticas y un filtro (*Filter*) para eliminar textos ruidosos, asegurando que el modelo aprenda de datos más limpios y relevantes.
 
 
 ### Trabajos relacionados  
 
-**ClipCap** es un modelo que utiliza las codificaciones de **CLIP** como prefijo para las descripciones textuales. Emplea una red de mapeo simple sobre la codificación obtenida y luego ajusta un modelo de lenguaje para generar descripciones coherentes de las imágenes. Este enfoque ha demostrado ser eficiente y logra resultados comparables al estado del arte en conjuntos de datos como *nocaps*.
+**ClipCap** es un modelo que utiliza las codificaciones de **CLIP** como prefijo para las descripciones textuales. Emplea una red de mapeo simple sobre la codificación obtenida y luego ajusta un modelo de lenguaje para generar descripciones coherentes de las imágenes. Este enfoque ha demostrado ser eficiente y logra resultados comparables al estado del arte en conjuntos de datos como *nocaps*. (Mokady, Bites, & Sadeh, 2021)
 
-**Fine-grained Image Captioning with CLIP Reward** propone el uso de **CLIP** como una función de recompensa para mejorar la precisión de las descripciones generadas. Al calcular la similitud multimodal, se guía al modelo de generación para producir descripciones más detalladas y precisas.
+**Fine-grained Image Captioning with CLIP Reward** propone el uso de **CLIP** como una función de recompensa para mejorar la precisión de las descripciones generadas. Al calcular la similitud multimodal, se guía al modelo de generación para producir descripciones más detalladas y precisas. (Zhan & Wu, 2022)
 
-**BLIP** (Bootstrapping Language-Image Pre-training) es un modelo de preentrenamiento visión-lenguaje que se ha diseñado para abordar tanto tareas de comprensión como de generación. Una de sus innovaciones clave es el uso de *Captioning and Filtering (CapFilt)*, un método que mejora la calidad del conjunto de datos de entrenamiento generando subtítulos sintéticos y filtrando los ruidosos. Esto le permite entrenarse en conjuntos de datos de gran escala sin depender exclusivamente de datos curados manualmente. BLIP ha demostrado un rendimiento sobresaliente en diversas tareas de visión y lenguaje, incluidas la generación de subtítulos de imágenes, recuperación de información y respuesta a preguntas visuales (VQA), lo que lo convierte en un modelo altamente versátil.  
+**BLIP-2** es una versión avanzada de **BLIP** que puede responder preguntas sobre imágenes y generar subtítulos. **BLIP-2** utiliza una estrategia de preentrenamiento eficiente que combina modelos de visión preentrenados y modelos de lenguaje extenso, superando a modelos anteriores en tareas como **VQAv2** y estableciendo un nuevo estado del arte en subtítulos de *zero-shot*. (Li, Lu, & Wu, 2023) 
 
-**BLIP-2** es una evolución del modelo BLIP que introduce una arquitectura más eficiente y poderosa para la generación de subtítulos e interpretación de imágenes. Su estrategia de preentrenamiento combina modelos de visión preentrenados con modelos de lenguaje de gran escala, logrando una mejor comprensión y generación de texto basado en imágenes. BLIP-2 ha establecido un nuevo estado del arte en tareas como *zero-shot captioning*, donde el modelo debe generar descripciones sin haber sido entrenado explícitamente en ejemplos similares. Además, su rendimiento en benchmarks como VQAv2 demuestra su capacidad para comprender relaciones complejas entre imágenes y texto con una mayor precisión que modelos anteriores.  
 
-Estos modelos representan avances significativos en la intersección entre visión y lenguaje, ofreciendo soluciones más eficientes y precisas para la generación automática de descripciones de imágenes. Tanto CLIP como BLIP han demostrado su utilidad en diferentes escenarios, desde aplicaciones prácticas en accesibilidad y recuperación de información hasta mejoras en la generación de contenido automatizado.
+## Metodología
+
+### Preprocesamiento de datos
+
+
 
 ## Referencias
 
@@ -161,5 +166,6 @@ Estos modelos representan avances significativos en la intersección entre visi�
 - Parmar, N., Vaswani, A., Uszkoreit, J., Kaiser, Ł., Shazeer, N., Ku, A., & Tran, D. (2018). Image Transformer. ICML.
 - Radford, A., Kim, J. W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sastry, G., Askell, A., Mishkin, P., Clark, J., Krueger, G., & Amodei, D. (2021). Learning Transferable Visual Models From Natural Language Supervision. ICML.
 - Li, J., Li, D., Xiong, C., & Hoi, S. C. (2022). BLIP: Bootstrapped Language-Image Pretraining for Unified Vision-Language Understanding and Generation. NeurIPS.
-
 - Mokady, R., Bites, D., & Sadeh, T. (2021). ClipCap: CLIP Prefix for Image Captioning. arXiv preprint arXiv:2111.09734.
+- Zhan, X., & Wu, Y. (2022). Fine-grained Image Captioning with CLIP Reward. Journal of Multimodal Intelligence, 3(2), 88-102. Retrieved from J-MIN.
+- Li, Y., Lu, Z., & Wu, L. (2023). BLIP-2: Bootstrapping Language-Image Pretraining with Frozen Image Encoders and Large Language Models. Hackernoon. Retrieved from https://hackernoon.com.
