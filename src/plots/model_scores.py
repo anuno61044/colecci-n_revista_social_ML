@@ -1,9 +1,10 @@
+import json
+
 import matplotlib.pyplot as plt
 import numpy as np
 
-import random as rd
 
-def model_scores(  scores : list[list[float]]  , legends : list[str]):
+def model_scores(scores: list[list[float]], legends: list[str]):
     """
     Plots the scores of different models
     """
@@ -15,8 +16,14 @@ def model_scores(  scores : list[list[float]]  , legends : list[str]):
     plt.legend()
     plt.show()
 
-model_scores([
-    [ rd.uniform(0, 1) for _ in range(1, 200) ],
-    [ rd.uniform(0, 1) for _ in range(1, 200) ],
-    [ rd.uniform(0, 1) for _ in range(1, 200) ]], ['model1', 'model2', 'model3']
-)
+def load_pipeline_json(json_path):
+    with open(json_path, "r") as file:
+        scores = json.load(file)
+        legends = []
+        score_values = []
+        for key, value in scores.items():
+            legends.append(f"Pipeline {key}")
+            score_values.append(value)
+        model_scores(score_values, legends)
+
+load_pipeline_json("scores.json")
